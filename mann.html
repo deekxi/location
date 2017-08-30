@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <script type="text/javascript">
+
+
+  function getLocation() {
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+          x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+  }
+
+  function showPosition(position) {
+      //x.innerHTML = "Latitude: " + position.coords.latitude +
+      //"<br>Longitude: " + position.coords.longitude;
+      var x = document.getElementById("demo");
+    //  x.innerHTML=("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+position.coords.latitude+","+position.coords.longitude+"&key=AIzaSyDNcpgv_bQnXzTfqS6uRog9bFemf_x45j4");
+      var o= new XMLHttpRequest();
+      o.open("get","http://maps.googleapis.com/maps/api/geocode/json?latlng="+position.coords.latitude+","+position.coords.longitude+"&sensor=true",true);
+      o.onreadystatechange=function()
+      {
+         if(o.readyState==4)
+         {
+          //  alert (o.responseText);
+           var res=o.responseText;
+          
+           var rass = JSON.parse(res);
+             x.innerHTML = rass.results[0].address_components[1].short_name+ ","+rass.results[0].address_components[2].short_name;
+         }
+      }
+
+      o.send(null);
+  }
+//  success:function(o.responseText){
+//  location.window.href= "maps4.html"
+//  }
+  </script>
+
+
+<p>Click the button to get your coordinates.</p>
+
+<button onclick="getLocation()">Try It</button>
+
+<p id="demo"></p>
+
+
+</body>
+</html>
